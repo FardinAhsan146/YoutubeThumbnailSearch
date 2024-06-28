@@ -1,0 +1,10 @@
+**/**.env
+**/**.sqlite
+**/**.ipynb 
+__pycache__/
+
+# Ignore everything in the chroma directory
+chroma_clip_embeddings/*
+
+# Unignore .py files in the chroma directory
+!chroma_clip_embeddings/*.py
