@@ -8,6 +8,8 @@ In the gif above I ran ` python main.py -youtuber belamiportalofficial -search_q
 
 Basically searched  Serbian news channel 'belamiportalofficial' (>30k videos), for videos with horses in their thumbnails. This can be a useful tool for journalists to search through massive amounts of foreign media. 
 
+Disclaimer: The first time search won't be as fast as above because it needs to download all the video titles and embeded the thumbnails. The average rate is around 1000 videos processed per minute. This is primarily because of having to rate limit the requests we send to youtube.
+
 ## This is the problem this tool solves for me 
 1. I want to search for a youtube video from a specific channel. 
 2. I forgot the title or anything even resembling it, or the title isn't in English and I have not a chance of ever finding it.
