@@ -25,9 +25,10 @@ model, preprocess = clip.load("ViT-B/32", device=device)
 client = chromadb.PersistentClient(path="chroma_clip_embeddings/")
 collection = client.get_or_create_collection(name="youtube_thumbnail_embeddings",  metadata={"hnsw:space": "cosine"})
 
+
 def print_video_info(video_data: Dict[str, Any]) -> None:
     """
-    Print out video title and URL to CLI.
+    Print out video title and URL to CLI with PowerShell-compatible hyperlinks.
 
     Args:
         video_data (Dict[str, Any]): Dictionary containing video data.
@@ -36,9 +37,11 @@ def print_video_info(video_data: Dict[str, Any]) -> None:
     
     for i, data in enumerate(zip(video_data['ids'][0], video_data['metadatas'][0])):
         id, metadata = data 
+        url = f"{base_url}{id}"
         print(f"-------- Video {i}")
         print(f"Video Title: {metadata['video_title']}")
-        print(f"Video Url: {base_url}{id}")
+        print(f"Video Url: {url}")
+        # PowerShell-compatible hyperlink
         print("-------- \n")
 
 def process_video(video: Any) -> Optional[Dict[str, Any]]:
@@ -105,8 +108,10 @@ def process_and_add(video: Any) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process YouTube videos and search for similar thumbnails")
-    parser.add_argument("youtuber", type=str, help="Name of the YouTuber")
-    parser.add_argument("search_query", type=str, help="Search query for similar thumbnails")
+    parser.add_argument("-youtuber", type=str, help="Name of the YouTuber")
+    parser.add_argument("-search_query", type=str, help="Search query for similar thumbnails")
+    parser.add_argument("-n_results", type=int, help="Number of search queries to return")
+    parser.add_argument("--refetch", action="store_true", help="Refetch and reprocess all data")
     args = parser.parse_args()
 
     youtuber = args.youtuber
@@ -114,18 +119,20 @@ if __name__ == "__main__":
     # Make the SQLITE table connection 
     conn = database_utils.create_connection(db_name = './database/youtuber_db.sqlite')
 
-    # create the videos table 
-    database_utils.create_table(conn)
+    if args.refetch:
+        # create the videos table 
+        database_utils.create_table(conn)
 
-    # Start downloading the video ids
-    get_video_ids.get_videos(youtuber, conn)
+        # Start downloading the video ids
+        get_video_ids.get_videos(youtuber, conn)
 
     # Get all the videos 
     all_videos = database_utils.get_videos_by_channel(conn, youtuber)
 
     # Process videos using multiple threads
-    with ThreadPoolExecutor(max_workers=40) as executor:
-        list(tqdm(executor.map(process_and_add, all_videos), total=len(all_videos), desc="Processing videos"))
+    if args.refetch:
+        with ThreadPoolExecutor(max_workers=40) as executor:
+            list(tqdm(executor.map(process_and_add, all_videos), total=len(all_videos), desc="Processing videos"))
 
     # Get the search query from command line arguments
     search_query = args.search_query
@@ -141,7 +148,7 @@ if __name__ == "__main__":
     # query results 
     results = collection.query(
         query_embeddings=[text_features_list],
-        n_results=100,
+        n_results=args.n_results,
         where={"channel_name": youtuber},
         include=["metadatas"]
     )
