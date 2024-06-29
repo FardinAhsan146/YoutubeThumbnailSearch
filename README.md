@@ -35,4 +35,6 @@ Disclaimer: The first time search won't be as fast as above because it needs to 
 * `pip install -r requirements.txt`
 
 ## How to run
-* `python main.py --youtuber <Name of youtuber> --search_query <What you want the thumbnails to contain>`
+* `python main.py -youtuber <Name of youtuber> -search_query <What you want the thumbnails to contain> -n_results <number of results you want fetched *>`
+
+*Fetch 100s or even thousands, it doesn't matter. ChromaDB can handle it. This limit is just for QOL reasons.*
