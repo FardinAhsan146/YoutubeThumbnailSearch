@@ -1,6 +1,6 @@
 ﻿# YoutubeThumbnailSearch
 
-YoutubeThumbnailSearch is a handy tool designed to help you search through YouTube channel thumbnails using text queries. Powered by the OpenAI CLIP model, it makes searching thumbnails easy and effective, especially for journalists or researchers workign with large amounts of media content.
+YoutubeThumbnailSearch is a handy tool designed to help you search through YouTube channel thumbnails using text queries. Powered by the [OpenAI CLIP](https://openai.com/index/clip/) model, it makes searching thumbnails easy and effective, especially for journalists or researchers workign with large amounts of media content.
 
 The gif below shows how I searched a Serbian news channel 'belamiportalofficial' with over 30,000 videos for those related to horses, just by their thumbnails.
 
