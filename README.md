@@ -17,6 +17,11 @@ Basically searched  Serbian news channel 'belamiportalofficial' (>30k videos), f
 6. Why not just search the text-image embedding pairs of all the videos thumbnails? BOOM.
 7. It doesn't even matter if the search or loadup is slow. It is still going to be miles faster than literally going through the youtube channel manually, which seems to be the only other alternative as opposed to cooking up some unholy yandex search query. 
 
+## How it works. 
+1. Download all the videos ids for a channel. You can construct the video url and thumbnail url from this. 
+2. Embded all the thumbnails using OpenAI's CLIP, and store the result in a vector db. 
+3. Done. You can now search through the video thumbnails using text search queries. 
+
 ## Comments 
 * Code quality is goofy because its a tool I made mostly for personal use. Will refactor and improve if required.
 * I'm using the `ViT-B/32` version CLIP, and albeit being one of the smaller models, it works excellently. It's a 300MB model so I can load it entirely into my RTX 3080 and do a gazillion operations on it. 
