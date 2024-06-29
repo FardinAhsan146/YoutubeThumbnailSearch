@@ -1,40 +1,56 @@
 ﻿# YoutubeThumbnailSearch
 
-This is basically a glorified image search engine. 
+YoutubeThumbnailSearch is an advanced image search tool designed to help you search through YouTube channel thumbnails based on text queries. This tool uses the powerful OpenAI CLIP model to embed and search thumbnails, making it remarkably useful for journalists or researchers dealing with large volumes of media content.
+
+The gif below demonstrates the process of searching a Serbian news channel 'belamiportalofficial' with over 30,000 videos for those related to horses based on their thumbnails.
 
 ![gif](https://github.com/FardinAhsan146/YoutubeThumbnailSearch/blob/master/docs/show.gif)
 
-In the gif above I ran ` python main.py -youtuber belamiportalofficial -search_query horse -n_results 5` 
+In the example above, I used the command `python main.py -youtuber belamiportalofficial -search_query horse -n_results 5` to search the channel 'belamiportalofficial' for videos with horses in the thumbnails.
 
-Basically searched  Serbian news channel 'belamiportalofficial' (>30k videos), for videos with horses in their thumbnails. This can be a useful tool for journalists to search through massive amounts of foreign media. 
+**Note:** The first-time search may take longer because the tool needs to download video titles and embed thumbnails. On average, the tool processes around 1,000 videos per minute due to rate limits on requests sent to YouTube.
 
-Disclaimer: The first time search won't be as fast as above because it needs to download all the video titles and embeded the thumbnails. The average rate is around 1000 videos processed per minute. This is primarily because of having to rate limit the requests we send to youtube.
+## Problem Solved by the Tool
 
-## This is the problem this tool solves for me 
-1. I want to search for a youtube video from a specific channel. 
-2. I forgot the title or anything even resembling it, or the title isn't in English and I have not a chance of ever finding it.
-3. I don't remmember the transcripts either. So my glorfied [youtube transcript search engine](https://github.com/FardinAhsan146/TalkToYoutuber) won't work either.
-4. But I do remmember what the videos thumbnail looks like..
-5. The channel has 100s if not 1000s of videos, so manually scrolling through is tedious. 
-6. Why not just search the text-image embedding pairs of all the videos thumbnails? BOOM.
-7. It doesn't even matter if the search or loadup is slow. It is still going to be miles faster than literally going through the youtube channel manually, which seems to be the only other alternative as opposed to cooking up some unholy yandex search query. 
+1. **Search Specific Channels:** It helps you search for videos from a specific YouTube channel.
+2. **Overcome Language/Title Issues:** It's ideal if you can't recall the video title or if it's in a non-English language.
+3. **When Transcripts Are Unavailable:** It’s useful when the video transcript is unavailable or unremembered.
+4. **Rely on Visual Memory:** Perfect for situations where you remember what the video's thumbnail looks like.
+5. **Handle Large Volumes:** It’s extremely helpful for bypassing manual scrolling through channels with hundreds or thousands of videos.
+6. **Boost Efficiency:** It allows searching through image embedding pairs of video thumbnails efficiently, significantly faster than manual searching.
 
-## How it works. 
-1. Download all the videos ids for a channel. You can construct the video url and thumbnail url from this. 
-2. Embded all the thumbnails using OpenAI's CLIP, and store the result in a vector db. 
-3. Done. You can now search through the video thumbnails using text search queries. 
+## Features
 
-## Comments 
-* Code quality is goofy because its a tool I made mostly for personal use. Will refactor and improve if required.
-* I'm using the `ViT-B/32` version CLIP, and albeit being one of the smaller models, it works excellently. It's a 300MB model so I can load it entirely into my RTX 3080 and do a gazillion operations on it. 
-* The initial image url fetch is slow. Around 1 minute per 1000 videos. But youtubes rate limits are not that generous, and this is still a massively time saving tool as opposed to doing this task manually. 
-* It won't be slow the second time around because I store the results and embeddings in a vector database. 
+1. **Download Video IDs:** The tool fetches all video IDs for a channel and constructs video and thumbnail URLs.
+2. **Embed Thumbnails:** It uses the OpenAI CLIP model to embed thumbnails and stores the results in a vector database.
+3. **Search Thumbnails with Text:** You can search video thumbnails using text queries.
+4. **Persistent Database:** It stores results and embeddings in a vector database for faster subsequent searches.
+
+## Technical Comments
+
+- The code is optimized for personal use, so it may require refactoring for broader applications.
+- It utilizes the smaller yet effective `ViT-B/32` version of CLIP, which works excellently with a manageable model size (300MB) for operations on an RTX 3080 GPU.
+- The initial image URL fetching may be slow (~1 minute per 1,000 videos) due to YouTube rate limits but significantly saves time compared to manual scrolling.
+- Subsequent searches are faster because the tool stores embeddings in a persistent vector database.
 
 ## Installation
-* You will need pytorch and a Cuda GPU. Otherwise this project won't be feasible to run. 
-* `pip install -r requirements.txt`
 
-## How to run
-* `python main.py -youtuber <Name of youtuber> -search_query <What you want the thumbnails to contain> -n_results <number of results you want fetched *>`
+To use YoutubeThumbnailSearch, ensure you have a CUDA-enabled GPU and PyTorch installed. Install the required dependencies using:
 
-*Fetch 100s or even thousands, it doesn't matter. ChromaDB can handle it. This limit is just for QOL reasons.*
+```bash
+pip install -r requirements.txt
+```
+
+## How to Run
+
+To search for videos from a specific YouTube channel based on thumbnail content, run:
+
+```bash
+python main.py -youtuber <Name of Youtuber> -search_query <Search Query> -n_results <Number of Results to Fetch>
+```
+
+*Fetch large volumes of results if needed; ChromaDB can handle it. The result limit is primarily for user convenience.*
+
+---
+
+Use this project to efficiently search through extensive video collections, leveraging state-of-the-art image-text embedding technology to meet your unique search requirements.
