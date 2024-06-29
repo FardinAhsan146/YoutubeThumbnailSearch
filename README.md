@@ -2,6 +2,8 @@
 
 This is basically a glorified image search engine. 
 
+![gif](https://github.com/FardinAhsan146/YoutubeThumbnailSearch/blob/master/docs/show.gif)
+
 ## This is the problem this tool solves for me 
 1. I want to search for a youtube video from a specific channel. 
 2. I forgot the title or anything even resembling it, or the title isn't in English and I have not a chance of ever finding it.
